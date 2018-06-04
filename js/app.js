@@ -6,6 +6,7 @@ var nodeTitle = document.getElementById('title');
 var nodeImg = document.getElementById('image');
 var divStudents = document.getElementById('students');
 var divFilters = document.getElementById('filters');
+var divMessage = document.getElementById('message');
 var selectCourse = divFilters.children[0]; // enfant d'indice 0
 
 var config = {
@@ -20,13 +21,18 @@ var config = {
     {name: 'Othman', status: 'CDI', attendedCourses: []},
     {name: 'Tristan', age: 23, attendedCourses: ['Symfony', 'javascript']},
     {name: 'Nakkib', age: 30, attendedCourses: ['PHP', 'javascript', 'Angular', 'Nodejs']}
-  ]
+  ],
+  studentsFiltered: null
 };
 
 // 2. FONCTIONS
 function init() {
-  l('Coucou à tous');
   nodeTitle.innerText = title;
+
+  // on copie le tableau des étudiants non filtrés dans
+  // celui des étudiants filtrés
+  config.studentsFiltered = config.students;
+
   divStudents.innerHTML = buildStudentTable();
 }
 
@@ -79,23 +85,23 @@ function buildStudentTable() {
   // boucle sur le tableau des étudiants
   s += header;
 
-  for (let i=0; i<config.students.length; i++) {
+  for (let i=0; i<config.studentsFiltered.length; i++) {
     s += '<tr>';
 
     // Colonne Nom
     s += '<td>';
-    s += config.students[i].name;
+    s += config.studentsFiltered[i].name;
     s += '</td>';
 
     // Colonne Age
     s += '<td>';
     // if syntaxe rapide (valable pour une seule instruction)
-    if (config.students[i].age) s += config.students[i].age;
+    if (config.studentsFiltered[i].age) s += config.studentsFiltered[i].age;
     s += '</td>';
 
     // Colonne cours suivis
     s += '<td>';
-    s += config.students[i].attendedCourses;
+    s += config.studentsFiltered[i].attendedCourses;
     s += '</td>';
 
     s += '</tr>';
@@ -111,14 +117,27 @@ function buildStudentTable() {
 // })
 
 nodeTitle.addEventListener('mouseover', displayImg);
+
 selectCourse.addEventListener('change', function() {
-  l(this.value);
+  let selectedCourse = this.value;
 
-  // modifier la source de données par rapport
-  // à l'option choisie
+  if (selectedCourse == '0') {
+    config.studentsFiltered = config.students;
+    divMessage.innerText = '';  // retrait du message
+  } else {
+    // modifier la source de données par rapport à l'option choisie
+    let studentsFiltered = config.students.filter(function(student) {
+      return student.attendedCourses.indexOf(selectedCourse) != -1;
+    })
+    config.studentsFiltered = studentsFiltered;
 
-  config.students
+    // affichage du message
+    divMessage.innerText =
+      config.studentsFiltered.length + ' étudiant(s) trouvé(s)';
+  }
 
+  // on recrée le DOM (tableau des étudiants filtrés)
+  divStudents.innerHTML = buildStudentTable();
 })
 
 
