@@ -117,6 +117,8 @@ selectCourse.addEventListener('change', function() {
   // modifier la source de données par rapport
   // à l'option choisie
 
+  config.students
+
 })
 
 
