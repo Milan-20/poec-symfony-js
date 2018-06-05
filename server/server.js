@@ -67,15 +67,15 @@ var teams = [
     nbCup: 1
   },
   {
-    id: 7,
-    logo: 'http://img4.hostingpics.net/pics/748350logo21.png',
-    name: 'Milan AC',
-    country: 'Italie',
-    stadium: 'San Siro',
-    coach: 'Gattuso',
-    founded: 1902,
-    nbCup: 3
-  },
+  id: 7,
+  logo: 'http://img4.hostingpics.net/pics/748350logo21.png',
+  name: 'Milan AC',
+  country: 'Italie',
+  stadium: 'San Siro',
+  coach: 'Gattuso',
+  founded: 1902,
+  nbCup: 3
+},
 ];
 
 var players = [
