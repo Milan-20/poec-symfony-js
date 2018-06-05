@@ -96,7 +96,9 @@
 
       // Colonne Nom
       s += '<td>';
+      s += '<a href="async.html">';
       s += config.studentsFiltered[i].name;
+      s += '</a>'
       s += '</td>';
 
       // Colonne Age
@@ -178,6 +180,6 @@
 
   // Initialisation
   init();
-  
+
 
 })()

@@ -4,7 +4,15 @@
     <meta charset="utf-8">
     <title>Async</title>
     <style>
-        img { width:100px }
+        img {
+          width:100px;
+          position:relative;
+          top: 0;
+          left: 0;
+          opacity: 1;
+        }
+
+        img.logo { width: 50px }
     </style>
   </head>
   <body>
@@ -12,8 +20,19 @@
     <button id="btnStart" type="button">Démarrer l'animation</button>
     <button id="btnStop" type="button">Arrêter l'animation</button>
     <div id="message"></div>
-    <img src="img/colisee.jpg" alt="">
+    <img id ="imgColisee" src="img/colisee.jpg" alt="">
+
+    <section>
+      <button id="btnAjax" type="button">Requête ajax</button>
+    </section>
 
     <script type="text/javascript" src="js/async.js"></script>
   </body>
 </html>
+
+
+
+
+
+
+<!-- -->
