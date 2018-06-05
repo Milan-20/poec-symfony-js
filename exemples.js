@@ -71,6 +71,13 @@ for (var i=0; i<students.length; i++) {
 //console.log(studentsFiltered);
 
 // variante 2 : méthode .filter
-var studentsFiltered =
-    students.filter(student => student.age >= 28 && student.age <= 30);
+var trentenaire = person => person.age >= 30 && person.age <= 39;
+var majeur = person => person.age >= 18;
+var mineur = person => person.age < 18;
+
+var bebe = function(person) {
+  return person.age < 3;
+}
+
+var studentsFiltered = students.filter(bebe);
 console.log(studentsFiltered);

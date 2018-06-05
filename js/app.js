@@ -1,186 +1,183 @@
-// I.  Variables globales + accès aux éléments du DOM
-var title = 'Formation JS';
-var l = console.log;
+(function() {
 
-var nodeTitle = document.getElementById('title');
-var nodeImg = document.getElementById('image');
-var divStudents = document.getElementById('students');
-var divFilters = document.getElementById('filters');
-var divMessage = document.getElementById('message');
+  // I.  Variables globales + accès aux éléments du DOM
+  var title = 'Formation JS';
+  var l = console.log;
 
-var selectCourse = divFilters.children[0]; // enfant d'indice 0
-var checkMajor = divFilters.children[2];
-var textSearch = divFilters.children[3];
+  var nodeTitle = document.getElementById('title');
+  var nodeImg = document.getElementById('image');
+  var divStudents = document.getElementById('students');
+  var divFilters = document.getElementById('filters');
+  var divMessage = document.getElementById('message');
 
-var config = {
-  appVersion: 1,
-  animation: false,
-  afficheMessage: function(message) {
-    l(message)
-  },
-  students: [
-    {name: 'Dominique', age: 14, attendedCourses: ['PHP', 'javascript']},
-    {name: 'Antonio', age: 25, attendedCourses: ['PHP']},
-    {name: 'Othman', status: 'CDI', attendedCourses: []},
-    {name: 'Tristan', age: 23, attendedCourses: ['Symfony', 'javascript']},
-    {name: 'Nakkib', age: 30, attendedCourses: ['PHP', 'javascript', 'Angular', 'Nodejs']}
-  ],
-  studentsFiltered: null,
-  ageMajority: 18
-};
+  var selectCourse = divFilters.children[0]; // enfant d'indice 0
+  var checkMajor = divFilters.children[2];
+  var textSearch = divFilters.children[3];
 
-// 2. FONCTIONS
-function init() {
-  nodeTitle.innerText = title;
+  var config = {
+    appVersion: 1,
+    animation: false,
+    afficheMessage: function(message) {
+      l(message)
+    },
+    students: [
+      {name: 'Dominique', age: 14, attendedCourses: ['PHP', 'javascript']},
+      {name: 'Antonio', age: 25, attendedCourses: ['PHP']},
+      {name: 'Othman', status: 'CDI', attendedCourses: []},
+      {name: 'Tristan', age: 23, attendedCourses: ['Symfony', 'javascript']},
+      {name: 'Nakkib', age: 30, attendedCourses: ['PHP', 'javascript', 'Angular', 'Nodejs']}
+    ],
+    studentsFiltered: null,
+    ageMajority: 18
+  };
 
-  // on copie le tableau des étudiants non filtrés dans
-  // celui des étudiants filtrés
-  config.studentsFiltered = config.students;
+  // 2. FONCTIONS
+  function init() {
+    nodeTitle.innerText = title;
 
-  divStudents.innerHTML = buildStudentTable();
-}
+    // on copie le tableau des étudiants non filtrés dans
+    // celui des étudiants filtrés
+    config.studentsFiltered = config.students;
 
-function displayImg() {
-  // let display = nodeImg.style.display;
-  //
-  // if (display === 'none') {
-  //
-  //   // display = 'inline'; Problème, modifie la copie
-  //   // de l'image pas l'original, pas d'impact sur le DOM
-  //   nodeImg.style.display = 'inline'
-  // } else {
-  //   nodeImg.style.display = 'none'
-  // }
-
-  // version avec opérateur ternaire (syntaxe raccourcie)
-
-  if (config.animation) {
-    let display = nodeImg.style.display;
-    nodeImg.style.display = (display === 'none')
-    ? 'inline' : 'none';
+    divStudents.innerHTML = buildStudentTable();
   }
 
+  function displayImg() {
+    // let display = nodeImg.style.display;
+    //
+    // if (display === 'none') {
+    //
+    //   // display = 'inline'; Problème, modifie la copie
+    //   // de l'image pas l'original, pas d'impact sur le DOM
+    //   nodeImg.style.display = 'inline'
+    // } else {
+    //   nodeImg.style.display = 'none'
+    // }
 
-}
+    // version avec opérateur ternaire (syntaxe raccourcie)
 
-function buildStudentList() {
-  let s = '<ul>'; // variable contenant balisage html
-
-  // boucle sur le tableau des étudiants
-  for (let i=0; i<config.students.length; i++) {
-    s += '<li>';
-    s += config.students[i].name;
-
-    // si l'object student dispose d'une propriété age
-    if (config.students[i].age) {
-      s += ' (' + config.students[i].age + ' ans)'
+    if (config.animation) {
+      let display = nodeImg.style.display;
+      nodeImg.style.display = (display === 'none')
+      ? 'inline' : 'none';
     }
 
-    s += '</li>';
+
   }
 
-  s += '</ul>';
-  return s; // retourne le balisage HTML
-}
+  function buildStudentList() {
+    let s = '<ul>'; // variable contenant balisage html
 
-function buildStudentTable() {
-  let header = '<tr><th>Nom</th><th>Age</th><th>Cours suivis</th></tr>';
-  let s = '<table class="table table-bordered table-striped">'; // variable contenant balisage html
-  // boucle sur le tableau des étudiants
-  s += header;
+    // boucle sur le tableau des étudiants
+    for (let i=0; i<config.students.length; i++) {
+      s += '<li>';
+      s += config.students[i].name;
 
-  for (let i=0; i<config.studentsFiltered.length; i++) {
-    s += '<tr>';
+      // si l'object student dispose d'une propriété age
+      if (config.students[i].age) {
+        s += ' (' + config.students[i].age + ' ans)'
+      }
 
-    // Colonne Nom
-    s += '<td>';
-    s += config.studentsFiltered[i].name;
-    s += '</td>';
+      s += '</li>';
+    }
 
-    // Colonne Age
-    s += '<td>';
-    // if syntaxe rapide (valable pour une seule instruction)
-    if (config.studentsFiltered[i].age) s += config.studentsFiltered[i].age;
-    s += '</td>';
-
-    // Colonne cours suivis
-    s += '<td>';
-    s += config.studentsFiltered[i].attendedCourses;
-    s += '</td>';
-
-    s += '</tr>';
+    s += '</ul>';
+    return s; // retourne le balisage HTML
   }
 
-  s += '</table>';
-  return s; // retourne le balisage HTML
-}
+  function buildStudentTable() {
+    let header = '<tr><th>Nom</th><th>Age</th><th>Cours suivis</th></tr>';
+    let s = '<table class="table table-bordered table-striped">'; // variable contenant balisage html
+    // boucle sur le tableau des étudiants
+    s += header;
 
-// 3. Evenements
-// nodeTitle.addEventListener('click', function() {
-//   console.log('OK');
-// })
+    for (let i=0; i<config.studentsFiltered.length; i++) {
+      s += '<tr>';
 
-nodeTitle.addEventListener('mouseover', displayImg);
+      // Colonne Nom
+      s += '<td>';
+      s += config.studentsFiltered[i].name;
+      s += '</td>';
 
-selectCourse.addEventListener('change', function() {
-  let selectedCourse = this.value;
+      // Colonne Age
+      s += '<td>';
+      // if syntaxe rapide (valable pour une seule instruction)
+      if (config.studentsFiltered[i].age) s += config.studentsFiltered[i].age;
+      s += '</td>';
 
-  if (selectedCourse == '0') {
-    config.studentsFiltered = config.students;
-    divMessage.innerText = '';  // retrait du message
-  } else {
-    // modifier la source de données par rapport à l'option choisie
-    let studentsFiltered = config.students.filter(function(student) {
-      return student.attendedCourses.indexOf(selectedCourse) != -1;
-    })
-    config.studentsFiltered = studentsFiltered;
+      // Colonne cours suivis
+      s += '<td>';
+      s += config.studentsFiltered[i].attendedCourses;
+      s += '</td>';
 
-    // affichage du message
-    divMessage.innerText =
-      config.studentsFiltered.length + ' étudiant(s) trouvé(s)';
+      s += '</tr>';
+    }
+
+    s += '</table>';
+    return s; // retourne le balisage HTML
   }
 
-  // on recrée le DOM (tableau des étudiants filtrés)
-  divStudents.innerHTML = buildStudentTable();
-})
+  // 3. Evenements
+  // nodeTitle.addEventListener('click', function() {
+  //   console.log('OK');
+  // })
 
-checkMajor.addEventListener('click', function() {
-  if (this.checked) {
-    let studentsFiltered =
-      config.students.filter(student =>
-        student.age >= config.ageMajority);
+  nodeTitle.addEventListener('mouseover', displayImg);
 
-    config.studentsFiltered = studentsFiltered;
-  } else {
-    config.studentsFiltered = config.students;
-  }
+  selectCourse.addEventListener('change', function() {
+    let selectedCourse = this.value;
 
-  // mise à jour du DOM
-  divStudents.innerHTML = buildStudentTable();
-})
+    if (selectedCourse == '0') {
+      config.studentsFiltered = config.students;
+      divMessage.innerText = '';  // retrait du message
+    } else {
+      // modifier la source de données par rapport à l'option choisie
+      let studentsFiltered = config.students.filter(function(student) {
+        return student.attendedCourses.indexOf(selectedCourse) != -1;
+      })
+      config.studentsFiltered = studentsFiltered;
 
-textSearch.addEventListener('keyup', function() {
+      // affichage du message
+      divMessage.innerText =
+        config.studentsFiltered.length + ' étudiant(s) trouvé(s)';
+    }
 
-  if (this.value.length > 2) {
-    let studentsFiltered =
-      config.students.filter(
-        student => student.name.toLowerCase().indexOf(this.value.toLowerCase()) != -1);
-    config.studentsFiltered = studentsFiltered;
-  } else {
-    config.studentsFiltered = config.students;
-  }
+    // on recrée le DOM (tableau des étudiants filtrés)
+    divStudents.innerHTML = buildStudentTable();
+  })
 
-  // Mise à jour du DOM
-  divStudents.innerHTML = buildStudentTable();
-})
+  checkMajor.addEventListener('click', function() {
+    if (this.checked) {
+      let studentsFiltered =
+        config.students.filter(student =>
+          student.age >= config.ageMajority);
 
-// Initialisation
-init();
+      config.studentsFiltered = studentsFiltered;
+    } else {
+      config.studentsFiltered = config.students;
+    }
 
+    // mise à jour du DOM
+    divStudents.innerHTML = buildStudentTable();
+  })
 
+  textSearch.addEventListener('keyup', function() {
 
+    if (this.value.length > 2) {
+      let studentsFiltered =
+        config.students.filter(
+          student => student.name.toLowerCase().indexOf(this.value.toLowerCase()) != -1);
+      config.studentsFiltered = studentsFiltered;
+    } else {
+      config.studentsFiltered = config.students;
+    }
 
+    // Mise à jour du DOM
+    divStudents.innerHTML = buildStudentTable();
+  })
 
+  // Initialisation
+  init();
+  
 
-
-//
+})()
