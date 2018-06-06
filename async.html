@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Async</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <style>
         img {
           width:100px;
@@ -11,19 +12,24 @@
           left: 0;
           opacity: 1;
         }
-
         img.logo { width: 50px }
     </style>
   </head>
   <body>
     <h1>Asynchonie</h1>
-    <button id="btnStart" type="button">Démarrer l'animation</button>
-    <button id="btnStop" type="button">Arrêter l'animation</button>
-    <div id="message"></div>
-    <img id ="imgColisee" src="img/colisee.jpg" alt="">
 
+    <!-- Animation -->
+    <section>
+      <button id="btnStart" type="button">Démarrer l'animation</button>
+      <button id="btnStop" type="button">Arrêter l'animation</button>
+      <div id="message"></div>
+      <img id ="imgColisee" src="img/colisee.jpg" alt="">
+    </section>
+
+    <!-- Ajax -->
     <section>
       <button id="btnAjax" type="button">Requête ajax</button>
+      <div class="alert" id="teams"></div>
     </section>
 
     <script type="text/javascript" src="js/async.js"></script>

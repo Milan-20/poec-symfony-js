@@ -14,6 +14,11 @@
   var checkMajor = divFilters.children[2];
   var textSearch = divFilters.children[3];
 
+  // code au mauvais endroit, les éléments de classe ciblée
+  // ne sont pas encore présents dans le DOM
+  //var students = document.getElementsByClassName('student');
+  //l(students.length);
+
   var config = {
     appVersion: 1,
     animation: false,
@@ -21,11 +26,11 @@
       l(message)
     },
     students: [
-      {name: 'Dominique', age: 14, attendedCourses: ['PHP', 'javascript']},
-      {name: 'Antonio', age: 25, attendedCourses: ['PHP']},
-      {name: 'Othman', status: 'CDI', attendedCourses: []},
-      {name: 'Tristan', age: 23, attendedCourses: ['Symfony', 'javascript']},
-      {name: 'Nakkib', age: 30, attendedCourses: ['PHP', 'javascript', 'Angular', 'Nodejs']}
+      {id:1, name: 'Dominique', age: 14, attendedCourses: ['PHP', 'javascript']},
+      {id:2, name: 'Antonio', age: 25, attendedCourses: ['PHP']},
+      {id:3, name: 'Othman', status: 'CDI', attendedCourses: []},
+      {id:4, name: 'Tristan', age: 23, attendedCourses: ['Symfony', 'javascript']},
+      {id:5, name: 'Nakkib', age: 30, attendedCourses: ['PHP', 'javascript', 'Angular', 'Nodejs']}
     ],
     studentsFiltered: null,
     ageMajority: 18
@@ -35,11 +40,9 @@
   function init() {
     nodeTitle.innerText = title;
 
-    // on copie le tableau des étudiants non filtrés dans
-    // celui des étudiants filtrés
+    // on copie le tableau des étudiants non filtrés dans celui des étudiants filtrés
     config.studentsFiltered = config.students;
-
-    divStudents.innerHTML = buildStudentTable();
+    updateDom();
   }
 
   function displayImg() {
@@ -96,7 +99,7 @@
 
       // Colonne Nom
       s += '<td>';
-      s += '<a href="async.html">';
+      s += '<a id="'+config.studentsFiltered[i].id+'" class="student" href="#">';
       s += config.studentsFiltered[i].name;
       s += '</a>'
       s += '</td>';
@@ -117,6 +120,23 @@
 
     s += '</table>';
     return s; // retourne le balisage HTML
+  }
+
+  function updateDom() {
+    divStudents.innerHTML = buildStudentTable();
+    var students = document.getElementsByClassName('student');
+    for (let i=0; i<students.length; i++) {
+      students[i].addEventListener('click', () => {
+        let studentId = students[i].id;
+
+        // requête ajax pour obtenir infos supplémentaire
+        // sur l'étudiant identifié
+        fetch('http://localhost:5000/student/' + studentId)
+          .then((res) => res.json())
+          .then((res) => console.log(res))
+
+      })
+    }
   }
 
   // 3. Evenements
@@ -145,7 +165,7 @@
     }
 
     // on recrée le DOM (tableau des étudiants filtrés)
-    divStudents.innerHTML = buildStudentTable();
+    updateDom();
   })
 
   checkMajor.addEventListener('click', function() {
@@ -160,7 +180,7 @@
     }
 
     // mise à jour du DOM
-    divStudents.innerHTML = buildStudentTable();
+    updateDom();
   })
 
   textSearch.addEventListener('keyup', function() {
@@ -174,9 +194,9 @@
       config.studentsFiltered = config.students;
     }
 
-    // Mise à jour du DOM
-    divStudents.innerHTML = buildStudentTable();
+    updateDom(); // Mise à jour du DOM
   })
+
 
   // Initialisation
   init();

@@ -9,20 +9,18 @@
   const btnStop       = document.getElementById('btnStop');
   const imgColisee    = document.getElementById('imgColisee');
   const btnAjax       = document.getElementById('btnAjax');
+  const divTeams      = document.getElementById('teams');
 
-  // setTimeout(function() {
-  //   console.log('première instruction')
-  // }, 8000)
 
   // II Fonctions
   function init() {}
 
   function startAnim() {
     let w = imgColisee.width;
-    let left = imgColisee.style.left;
-    let opa = 1;
+    //let opa = 1;
+    let opa =  imgColisee.style.opacity;
+    console.log(opa);
 
-    console.log(left);
     config.anim = setInterval(function() {
       //divMessage.innerHTML += '<p>Blabla</p>';
       w += 10;
@@ -43,7 +41,9 @@
 
   btnAjax.addEventListener('click', () => {
     //if (fetch) console.log('fetch dispo');
-    divMessage.innerHTML = ''; // clear
+    divTeams.innerHTML = ''; // clear
+    divTeams.classList.remove('alert-danger');
+    
     fetch('http://localhost:5000/teams')
       .then(res => res.json())
       .then(teams => {
@@ -54,10 +54,15 @@
         teams.forEach(team => {
           let s = '<p><img class="logo" src="'+team.logo+'" alt="">';
           s += '<span>'+team.name+'</span></p>';
-          divMessage.innerHTML += s;
+          divTeams.innerHTML += s;
         })
 
-      });
+      })
+      .catch((err) => {
+        divTeams.innerHTML +=
+        'Erreur: impossible de charger les équipes';
+        divTeams.classList.add('alert-danger');
+      })
 
   })
 

@@ -129,6 +129,7 @@ app.use(function(req, res, next) {
 });
 
 // Routes
+app.get('/student/:id', (req, res) => res.json('Infos supplémentaires'));
 app.get('/teams', (req, res) => res.json(teams));
 app.get('/players', (req, res) => res.json(players));
 app.get('/teams/:team/players', (req, res) => {
